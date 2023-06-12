@@ -20,32 +20,48 @@ public class jpaMain {
             team.setName("TeamA");
             em.persist(team);
 
+
+            Team team2 = new Team();
+            team.setName("TeamA");
+            em.persist(team2);
+
+            Team team3 = new Team();
+            team.setName("TeamC");
+            em.persist(team3);
+
             Member member = new Member();
             //member.setUsername("member1");
             member.setAge(10);
-
+            member.setUsername("member1");
             member.setTeam(team);
 
             em.persist(member);
 
-            em.flush();
-            em.clear();
+            Member member2 = new Member();
+            //member.setUsername("member1");
+            member2.setAge(20);
+            member2.setUsername("member2.");
+            member2.setTeam(team3);
 
-            String query =
-                    "select " +
-                            "case when m.age <= 10 then '학생요금' " +
-                            "     when m.age >= 60 then '경로요금' " +
-                            "     else '일반요금' " +
-                            "end " +
-                    "from Member m";
+            em.persist(member2);
 
-            String query2 = "select coalesce(m.username, '이름없는회언') from Member m";
-            List<String> result = em.createQuery(query2, String.class)
-                    .getResultList();
+            Member member3 = new Member();
+            //member.setUsername("member1");
+            member3.setAge(20);
+            member3.setUsername("member3.");
+            member3.setTeam(team);
 
-            for (String s : result) {
-                System.out.println("s = " + s);
-            }
+            em.persist(member3);
+
+            String query2 = "update Member m set m.username='asd'";
+            //flush
+            em.createQuery(query2)
+                    .executeUpdate();
+
+
+            Member findMember = em.find(Member.class, member.getId());
+
+            System.out.println(findMember.getAge());
 
             tx.commit();
         } catch (Exception e) {
